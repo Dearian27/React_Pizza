@@ -1,22 +1,22 @@
 import { useState } from "react"
 
-const Categories = () => {
+const Categories = ({value, onChangeCategory}) => {
 
   const categories = [
-    'Всі',  
+    'Всі',
     'М\'ясні',
     'Вегетеріанські',
     'Гриль',
     'Гострі',
     'Закриті',
   ]
-  const [activeIndex, setActiveIndex] = useState(0)
+ 
 
   return(
    <div className="categories">
     <ul>
       {categories.map((el, index) => {
-        return <li onClick={() => setActiveIndex(index)} key={index} className={activeIndex === index ? 'active' : ''}>{el}</li>
+        return <li onClick={() => onChangeCategory(index)} key={index} className={value === index ? 'active' : ''}>{el}</li>
       })}
     </ul>
   </div>

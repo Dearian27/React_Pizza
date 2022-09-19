@@ -12,6 +12,7 @@
 
   &__logo {
     display: flex;
+    align-items: center;
 
     img {
       margin-right: 15px;
@@ -27,6 +28,53 @@
 
     p {
       color: #7b7b7b;
+    }
+  }
+}
+
+@media (max-width: 780px) {
+  .header {
+    padding: 20px 0;
+  }
+}
+
+@media (max-width: 680px) {
+  .header {
+
+    &__logo {
+
+      h1 {
+        font-size: 20px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      img {
+        height: 35px;
+      }
+    }
+  }
+}
+
+@media (max-width: 630px) {
+  .header {
+
+    &__logo {
+
+      img {
+        margin-right: 8px;
+        height: 28px;
+      }
+
+      h1 {
+        font-size: 16px;
+      }
+
+      p {
+        font-size: 10px;
+      }
     }
   }
 }
