@@ -70,8 +70,9 @@ const Home = () => {
       }, {addQueryPrefix: true})
       navigate(queryString)
     }
+    
     isMounted.current = true
-  }, [categoryId, sort.sortProperty, currentPage])
+  }, [categoryId, sort, currentPage, navigate])
 
 
 
@@ -82,11 +83,14 @@ const Home = () => {
       const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
       dispatch(
         setQuery({
-          ...params,
+          categoryId,
+          currentPage,
           sort,
         })
       )
+      fetchPizzas()
        isSearch.current = true
+
     }
   }, [])
 
