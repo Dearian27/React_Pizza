@@ -6,12 +6,14 @@ import { clearProducts } from '../redux/slices/cartSlice'
 
 const Cart = () => {
 
+  
 const dispatch = useDispatch()
-const  items  = useSelector(state => state.cart.items)
+const  {items, totalPrice}  = useSelector(state => state.cart)
+const totalCount = items.reduce((sum, item) => sum + item.count, 0) 
 
 const onClickClear = () => {
   dispatch(
-    clearProducts()
+    clearProducts(),
   )
 }
 
@@ -45,8 +47,8 @@ const onClickClear = () => {
         </div>
         <div className="cart__bottom">
           <div className="cart__bottom-details">
-            <span> Всього піц: <b>3 шт.</b> </span>
-            <span> Сума замовлення: <b>900 ₽</b> </span>
+            <span> Всього піц: <b>{totalCount} шт.</b> </span>
+            <span> Сума замовлення: <b>{totalPrice} ₴</b> </span>
           </div>
           <div className="cart__bottom-buttons">
             <Link to="/" className="button button--outline button--add go-back-btn">
