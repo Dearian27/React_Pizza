@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import CartItem from '../components/CartItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearProducts } from '../redux/slices/cartSlice'
+import CartEmpty from '../components/EmptyCart'
 
 const Cart = () => {
 
@@ -12,13 +13,19 @@ const  {items, totalPrice}  = useSelector(state => state.cart)
 const totalCount = items.reduce((sum, item) => sum + item.count, 0) 
 
 const onClickClear = () => {
-  dispatch(
-    clearProducts(),
-  )
+  if(window.confirm('Ви точно хочете очистити кошик?')) {
+    dispatch(
+      clearProducts(),
+    )
+  }
+}
+
+if(!totalPrice) {
+  return <CartEmpty/>
 }
 
   return(
-    <Fragment>
+    <>
       <div className="cart">
         <div className="cart__top">
           <h2 className="content__title">
@@ -63,7 +70,7 @@ const onClickClear = () => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   )
 }
 

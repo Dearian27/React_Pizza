@@ -21,8 +21,8 @@ const onClickAdd = () => {
     name: props.name,
     price: props.price,
     imageUrl: props.imageUrl,
-    type: activeType,
-    size: activeSize,
+    type: typeNames[activeType],
+    size: props.sizes[activeSize],
   }
   dispatch(addProduct(items))
 }
