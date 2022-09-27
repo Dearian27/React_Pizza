@@ -27,19 +27,32 @@ const Home = () => {
   const [items, setItems] = useState([])
   const [isLoading, setIsLoading] = useState(true)
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true)
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
     const sortBy = sort.sortProperty.replace('-', '')
     const category = categoryId > 0 ? `category=${categoryId}` : ''
     
-    axios.get(
-      `https://631e26c4cc652771a4926184.mockapi.io/mock/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}`
-    )
-    .then( res => {
-        setItems(res.data)
+    // axios.get(
+    //   `https://631e26c4cc652771a4926184.mockapi.io/mock/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}`
+    // )
+    // .then( res => {
+    //     setItems(res.data)
+    //   setIsLoading(false)
+    // })
+    
+    try {
+      const res = await axios.get(`https://631e26c4cc652771a4926184.mockapi.io/mock/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}`)
+      setItems(res.data)
+    }
+    catch(error) {
+      console.log(error);
+      alert('Сталася помилка при отриманні піц!')
+    }
+    finally {
       setIsLoading(false)
-    })
+    }
+    
   }
 
   const onChangePage = (number) => {
