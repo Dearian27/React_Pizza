@@ -5,13 +5,13 @@ const initialState = {
   categoryId: 0,
   currentPage: 1,
   sort: {
-    name:'за популярністю',
-    sortProperty:'rating'
+    name: 'за популярністю',
+    sortProperty: 'rating'
   }
 }
 
 const filterSlice = createSlice({
-  name:'filter',
+  name: 'filter',
   initialState,
   reducers: {
     setCategoryId(state, action) {
