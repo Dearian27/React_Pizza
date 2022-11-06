@@ -3,10 +3,10 @@ import axios from 'axios';
 
 export const fetchPizzas = createAsyncThunk('pizza/fetchPizzaStatus', async (params) => {
   const { order, sortBy, category, currentPage, search } = params
-
   const { data } = await axios.get(
     `https://631e26c4cc652771a4926184.mockapi.io/mock/pizzas?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
   );
+
   return data
 })
 
@@ -38,6 +38,8 @@ const pizzaSlice = createSlice({
     }
   }
 })
+
+export const pizzaDataSelector = state => state.pizza;
 
 export const { setItems } = pizzaSlice.actions
 export default pizzaSlice.reducer

@@ -1,24 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
- totalPrice: 0,
- items: [],
+  totalPrice: 0,
+  items: [],
 }
 
 const cartSlice = createSlice({
-  name:'cart',
+  name: 'cart',
   initialState,
   reducers: {
     addProduct(state, action) {
       const foundItem = state.items.find(obj => obj.id === action.payload.id)
-      
-      if(foundItem) {
+
+      if (foundItem) {
         foundItem.count++
       } else {
         state.items.push({
           ...action.payload,
           count: 1
-        })         
+        })
       }
 
       state.totalPrice = state.items.reduce((sum, obj) => {
@@ -27,7 +27,7 @@ const cartSlice = createSlice({
     },
     plusProduct(state, action) {
       const foundItem = state.items.find(obj => obj.id === action.payload)
-      if(foundItem) {
+      if (foundItem) {
         foundItem.count++
       }
       state.totalPrice = state.items.reduce((sum, obj) => {
@@ -36,8 +36,8 @@ const cartSlice = createSlice({
     },
     minusProduct(state, action) {
       const foundItem = state.items.find(obj => obj.id === action.payload)
-      if(foundItem) {
-        if(foundItem.count !== 1) {
+      if (foundItem) {
+        if (foundItem.count !== 1) {
           foundItem.count--
         } else {
           state.items = state.items.filter(obj => obj.id !== action.payload)
@@ -56,6 +56,9 @@ const cartSlice = createSlice({
     },
   }
 });
+
+export const cartSelector = (state) => state.cart;
+export const cartByIdSelector = id => state => state.cart.items.find(obj => obj.id === id)
 
 export const { addProduct, removeProduct, minusProduct, plusProduct, clearProducts } = cartSlice.actions;
 export default cartSlice.reducer
