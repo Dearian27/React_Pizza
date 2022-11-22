@@ -1,7 +1,11 @@
+import React from 'react';
 
+interface CategoriesProps {
+  value: number;
+  onChangeCategory: (id: number) => void;
+}
 
-
-const Categories = ({ value, onChangeCategory }) => {
+const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
 
   const categories = [
     'Всі',

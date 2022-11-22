@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react'
 import NotFoundText from '../components/NotFoundText'
 
-const NotFound = () => {
-  return(
+const NotFound: React.FC = () => {
+  return (
     <Fragment>
-      <NotFoundText/>
+      <NotFoundText />
       <button>Повернутись</button>
     </Fragment>
   )

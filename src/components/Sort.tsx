@@ -2,8 +2,12 @@ import { useRef, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setSort, sortSelector } from '../redux/slices/filterSlice'
 
+interface sortListI {
+  name: string;
+  sortProperty: string;
+}
 
-export const list = [
+export const sortList: sortListI[] = [
   { name: 'за популярністю', sortProperty: 'rating' },
   { name: 'від найдешевших', sortProperty: '-price' },
   { name: 'від найдорожчих', sortProperty: 'price' },
@@ -14,19 +18,19 @@ const Sort = () => {
 
   const dispatch = useDispatch()
   const sort = useSelector(sortSelector)
-  const sortRef = useRef()
+  const sortRef = useRef<HTMLDivElement>(null)
 
   const [open, setOpen] = useState(false)
 
   // const sortName = 
-  const onClickListItems = obj => {
+  const onClickListItems = (obj: sortListI) => {
     dispatch(setSort(obj))
     setOpen(false)
   }
 
   useEffect(() => {
 
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (!event.path.includes(sortRef.current)) {
         setOpen(false)
       }
@@ -61,13 +65,13 @@ const Sort = () => {
       {open &&
         <div className="sort__popup">
           <ul>
-            {list.map((obj, i) => {
+            {sortList.map((obj: sortListI, i) => {
               return (
                 <li
                   key={i}
                   onClick={() => onClickListItems(obj)}
                   className={sort.sortProperty === obj.sortProperty ? 'active' : ''}>
-                  {list[i].name}</li>
+                  {sortList[i].name}</li>
               )
             })
             }

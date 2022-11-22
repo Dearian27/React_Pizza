@@ -4,19 +4,21 @@ import styles from './Search.module.scss'
 import debounce from 'lodash.debounce'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
-const Search = () => {
+
+
+const Search: React.FC = () => {
   const dispatch = useDispatch()
   const [saveValue, setSaveValue] = useState('')
-  const inputRef = useRef()
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const updateSearchValue = useCallback(
-    debounce((str) => {
+    debounce((str: any) => {
       dispatch(setSeacrhValue(str))
     }, 1000)
     , []
   )
 
-  const onChangeInput = (e) => {
+  const onChangeInput = (e: any) => {
     setSaveValue(e.target.value)
     updateSearchValue(e.target.value)
   }
@@ -24,7 +26,7 @@ const Search = () => {
   const onClickClear = () => {
     setSaveValue('')
     dispatch(setSeacrhValue(saveValue))
-    inputRef.current.focus();
+    inputRef.current?.focus();
     console.log(inputRef)
   }
 
