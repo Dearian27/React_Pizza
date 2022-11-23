@@ -7,6 +7,10 @@ interface sortListI {
   sortProperty: string;
 }
 
+type PopupClick = MouseEvent & {
+  path: Node[]
+}
+
 export const sortList: sortListI[] = [
   { name: 'за популярністю', sortProperty: 'rating' },
   { name: 'від найдешевших', sortProperty: '-price' },
@@ -20,7 +24,7 @@ const Sort = () => {
   const sort = useSelector(sortSelector)
   const sortRef = useRef<HTMLDivElement>(null)
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState<boolean>(false)
 
   // const sortName = 
   const onClickListItems = (obj: sortListI) => {
@@ -30,8 +34,9 @@ const Sort = () => {
 
   useEffect(() => {
 
-    const handleClickOutside = (event: any) => {
-      if (!event.path.includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      const eventWithChangeType = event as PopupClick;
+      if (sortRef.current && !eventWithChangeType.path.includes(sortRef.current)) {
         setOpen(false)
       }
     }

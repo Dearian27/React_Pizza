@@ -5,16 +5,16 @@ interface CategoriesProps {
   onChangeCategory: (id: number) => void;
 }
 
-const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
+const categories: Array<string> = [
+  'Всі',
+  'М\'ясні',
+  'Вегетеріанські',
+  'Гриль',
+  'Гострі',
+  'Закриті',
+]
 
-  const categories = [
-    'Всі',
-    'М\'ясні',
-    'Вегетеріанські',
-    'Гриль',
-    'Гострі',
-    'Закриті',
-  ]
+const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
 
 
   return (

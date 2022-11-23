@@ -60,10 +60,6 @@ const Home: React.FC = () => {
       getPizzas()
       setIsMounted(true)
     }
-    // else {
-    // setIsSearch(false)
-    // }
-
   }, []);
 
 
@@ -95,9 +91,7 @@ const Home: React.FC = () => {
         })
       )
 
-
       getPizzas();
-      // setIsSearch(true);
     }
   }, [searchValue])
 
