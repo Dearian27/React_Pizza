@@ -19,7 +19,6 @@ const PizzaInfo: React.FC = () => {
       try {
         const { data } = await axios.get(`https://631e26c4cc652771a4926184.mockapi.io/mock/pizzas/${id}`);
         setPizza(data);
-        console.log("data", data)
       } catch (error) {
         alert('щось пішло не так при отриманні піц')
         console.log(error)

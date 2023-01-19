@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWhyDidYouUpdate } from 'ahooks'
 
 interface CategoriesProps {
   value: number;
@@ -14,8 +15,10 @@ const categories: Array<string> = [
   'Закриті',
 ]
 
-const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
 
+const Categories: React.FC<CategoriesProps> = React.memo(({ value, onChangeCategory }) => {
+
+  // useWhyDidYouUpdate('Categories', { value, onChangeCategory });
 
   return (
     <div className="categories">
@@ -26,6 +29,6 @@ const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
       </ul>
     </div>
   )
-}
+})
 
 export default Categories

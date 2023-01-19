@@ -1,6 +1,7 @@
 import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addProduct, cartByIdSelector } from '../../redux/slices/cartSlice'
+import { addProduct, cartByIdSelector, cartItem } from '../../redux/slices/cartSlice'
+import { Link } from 'react-router-dom'
 
 const typeNames = ['тонке', 'традиційне']
 
@@ -26,26 +27,29 @@ const PizzaBlock: React.FC<PizzaBlockProps> = (props) => {
 
 
   const onClickAdd = () => {
-    const items = {
+    const item: cartItem = {
       id: props.id,
       name: props.name,
       price: props.price,
       imageUrl: props.imageUrl,
       type: typeNames[activeType],
       size: props.sizes[activeSize],
+      count: 0,
     }
-    dispatch(addProduct(items))
+    dispatch(addProduct(item))
   }
 
   return (
     <Fragment>
       <div className="pizza-block__wrapper">
         <div className="pizza-block">
-          <img
-            className="pizza-block__image"
-            src={props.imageUrl}
-            alt="Pizza"
-          />
+          <Link to={`pizza/${props.id}`}>
+            <img
+              className="pizza-block__image"
+              src={props.imageUrl}
+              alt="Pizza"
+            />
+          </Link>
           <h4 className="pizza-block__title">{props.name}</h4>
           <div className="pizza-block__selector">
             <ul>
@@ -66,7 +70,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = (props) => {
                 props.sizes.map((size, i) => {
                   return (
                     <li
-                      key={size}
+                      key={i}
                       onClick={() => setActiveSize(i)}
                       className={activeSize === i ? 'active' : ''}>
                       {size} см</li>

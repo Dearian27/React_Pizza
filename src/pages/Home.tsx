@@ -1,5 +1,5 @@
-import { useContext, useRef, useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useEffect, useState, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import qs from 'qs'
 import { fetchPizzas, pizzaDataSelector } from '../redux/slices/pizzaSlice'
 import { filterSelector, setCategoryId, setCurrentPage, setQuery } from '../redux/slices/filterSlice'
@@ -10,15 +10,18 @@ import PizzaBlock from '../components/PizzaBlock'
 import Skeleton from '../components/PizzaBlock/skeleton'
 import Pagination from '../components/Pagination'
 
-import { Link, useNavigate } from 'react-router-dom'
-import { sortList as sortList } from '../components/Sort'
-
+import { useNavigate } from 'react-router-dom'
+import { sortList } from '../components/Sort'
+import { useAppDispatch } from '../redux/store'
+// import { sort } from '../redux/slices/filterSlice'
 //? type fixMe = any;
+
+
 
 const Home: React.FC = () => {
 
   const navigate = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
 
   const [isSearch, setIsSearch] = useState(false)
@@ -28,31 +31,35 @@ const Home: React.FC = () => {
   const { categoryId, sort, currentPage, searchValue } = useSelector(filterSelector)
   const { items, status } = useSelector(pizzaDataSelector)
 
+
+
   const getPizzas = async () => {
     const order = sort.sortProperty.includes('-') ? 'asc' : 'desc'
     const sortBy = sort.sortProperty.replace('-', '')
     const category = categoryId > 0 ? `category=${categoryId}` : ''
     const search = searchValue ? `&search=${searchValue}` : ''
 
+
     dispatch(
-      // @ts-ignore
       fetchPizzas({
         order,
         sortBy,
         category,
-        currentPage,
+        currentPage: String(currentPage),
         search
       })
-    )
-  }
+    );
+  };
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page))
+    getPizzas()
   }
 
-  const onChangeCategory = (id: number) => {
+  const onChangeCategory = useCallback((id: number) => {
     dispatch(setCategoryId(id))
-  }
+    getPizzas()
+  }, [categoryId])
 
 
   useEffect(() => {
@@ -64,17 +71,6 @@ const Home: React.FC = () => {
 
 
 
-  useEffect(() => {
-    if (isSearch) {
-      const queryString = qs.stringify({
-        categoryId: categoryId,
-        sortProperty: sort?.sortProperty,
-        currentPage: currentPage,
-      }, { addQueryPrefix: true })
-      navigate(queryString)
-    }
-  }, [])
-
 
   //! danger
   //? question
@@ -82,12 +78,19 @@ const Home: React.FC = () => {
   useEffect(() => {
     if (window.location.search) {
       const params = qs.parse(window.location.search.substring(1))
-      const sort = sortList.find(obj => obj.sortProperty === params.sortProperty)
+      console.log("params", params);
+      console.log("sortList", sortList);
+      const newSort = sortList.find(obj => obj.sortProperty === params.sortBy)
+      console.log({
+        categoryId,
+        currentPage,
+        newSort,
+      })
       dispatch(
         setQuery({
           categoryId,
           currentPage,
-          sort,
+          newSort,
         })
       )
 
@@ -100,7 +103,7 @@ const Home: React.FC = () => {
       return true
     else
       return false
-  }).map((obj: any) => <Link to={`pizza/${obj.id}`}><PizzaBlock key={obj.id} {...obj} /></Link>);
+  }).map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
 
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />)
 
@@ -118,8 +121,8 @@ const Home: React.FC = () => {
               <h2>Виникла помилка 😕</h2>
               <p>На жаль не вдалось отримати піци. Спробуйте перезапустити сайт або завітайте трошки пізніше</p>
             </div>
-            : status === 'loading'
-              ? skeletons
+            : status === 'loading' ?
+              skeletons
               : pizzas
         }
       </div>

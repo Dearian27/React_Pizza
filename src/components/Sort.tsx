@@ -1,33 +1,46 @@
+import QueryString from "qs";
 import { useRef, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { SortPropertyEnum } from "../redux/slices/filterSlice";
 import { setSort, sortSelector } from '../redux/slices/filterSlice'
 
 interface sortListI {
   name: string;
-  sortProperty: string;
+  sortProperty: SortPropertyEnum;
 }
+
 
 type PopupClick = MouseEvent & {
   path: Node[]
 }
 
 export const sortList: sortListI[] = [
-  { name: 'за популярністю', sortProperty: 'rating' },
-  { name: 'від найдешевших', sortProperty: '-price' },
-  { name: 'від найдорожчих', sortProperty: 'price' },
-  { name: 'за алфавітом', sortProperty: '-name' }
+  { name: 'за популярністю', sortProperty: SortPropertyEnum.RATING_DESC },
+  { name: 'від найдешевших', sortProperty: SortPropertyEnum.PRICE_ASC },
+  { name: 'від найдорожчих', sortProperty: SortPropertyEnum.PRICE_DESC },
+  { name: 'за алфавітом', sortProperty: SortPropertyEnum.NAME_DESC }
 ]
-
+// export const sortList: sortListI[] = [
+//   { name: 'за популярністю', sortProperty: 'rating' },
+//   { name: 'від найдешевших', sortProperty: '-price' },
+//   { name: 'від найдорожчих', sortProperty: 'price' },
+//   { name: 'за алфавітом', sortProperty: 'name' }
+// ]
+// sortProperty: SortPropertyEnum.RATING_DESC
 const Sort = () => {
 
   const dispatch = useDispatch()
-  const sort = useSelector(sortSelector)
+
+  const sort: sortListI = useSelector(sortSelector)
+
+  //! ENUM ERROR
+
   const sortRef = useRef<HTMLDivElement>(null)
 
   const [open, setOpen] = useState<boolean>(false)
 
-  // const sortName = 
-  const onClickListItems = (obj: sortListI) => {
+  const onClickListItem = (obj: sortListI) => {
+
     dispatch(setSort(obj))
     setOpen(false)
   }
@@ -74,7 +87,7 @@ const Sort = () => {
               return (
                 <li
                   key={i}
-                  onClick={() => onClickListItems(obj)}
+                  onClick={() => onClickListItem(obj)}
                   className={sort.sortProperty === obj.sortProperty ? 'active' : ''}>
                   {sortList[i].name}</li>
               )
